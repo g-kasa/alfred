@@ -6,11 +6,11 @@
         /// Collection of items.
         /// </summary>
         private T[] Items { get; set; }
+
         /// <summary>
         /// The minimum capacity of the collection.
         /// </summary>
-        private int MinCapacity { get; set; }
-
+        public int CurrentCapacity => Items.Length;
         /// <summary>
         /// Number of items in the collection.
         /// </summary>
@@ -22,7 +22,6 @@
 
         public ArrayList(int minCapacity)
         {
-            MinCapacity = minCapacity;
             Items = new T[minCapacity];
             Length = 0;
         }
@@ -77,12 +76,31 @@
         /// </returns>
         public T RemoveAt(int index)
         {
-            var correctIndex = CalculateCorrectIndex(index);
-            var value = Items[correctIndex];
-            ShiftLeft(correctIndex);
+            if (index < 0 || index >= Length)
+            {
+                throw new IndexOutOfRangeException();
+            }
+
+            var value = Items[index];
+            ShiftLeft(index);
             Length--;
 
+            if (Length < CurrentCapacity / 4)
+            {
+                ReduceCapacity();
+            }
+
             return value;
+        }
+
+        private void ReduceCapacity()
+        {
+            T[] newItems = new T[CurrentCapacity / 2];
+            for (var i = 0; i < Length; i++)
+            {
+                newItems[i] = Items[i];
+            }
+            Items = newItems;
         }
 
         private void DoubleCapacity()
@@ -97,9 +115,9 @@
 
         private void ShiftLeft(int index)
         {
-            for (var i = index; i < Length; i++)
+            for (var i = index + 1; i < Length; i++)
             {
-                Items[i] = Items[i + 1];
+                Items[i - 1] = Items[i];
             }
         }
 

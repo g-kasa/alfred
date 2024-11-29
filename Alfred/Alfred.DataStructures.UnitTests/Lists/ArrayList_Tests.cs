@@ -161,5 +161,66 @@ namespace Alfred.DataStructures.UnitTests.Lists
             Assert.Equal(4, list[2]);
             Assert.Equal(5, list[3]);
         }
+
+        [Fact]
+        public void ArrayList_RemoveAt_TestRemoveAtWithNegativePositionIndex()
+        {
+            // Arrange
+            var list = new ArrayList<int>();
+            list.Insert(0, 1);
+            list.Insert(1, 2);
+            var positionIndex = -1;
+            
+            // Act
+            
+            // Assert
+            Assert.Throws<IndexOutOfRangeException>(() => list.RemoveAt(positionIndex));
+        }
+
+        [Fact]
+        public void ArrayList_RemoveAt_TestRemoveAtWithPositionIndexGreaterThanLength()
+        {
+            // Arrange
+            var list = new ArrayList<int>();
+            list.Insert(0, 1);
+            list.Insert(1, 2);
+            var positionIndex = 2;
+
+            // Act
+
+            // Assert
+            Assert.Throws<IndexOutOfRangeException>(() => list.RemoveAt(positionIndex));
+        }
+
+        [Fact]
+        public void ArrayList_RemoveAt_TestReduceCapacityWhenLengthIsLessThanQuarterCapacity()
+        {
+            // Arrange
+            var list = new ArrayList<int>(10);
+            list.Insert(0, 1);
+            list.Insert(1, 2);
+            list.Insert(2, 3);
+            list.Insert(3, 4);
+            list.Insert(4, 5);
+            list.Insert(5, 6);
+            list.Insert(6, 7);
+            list.Insert(7, 8);
+            list.Insert(8, 9);
+            list.Insert(9, 10);
+
+            // Act
+            list.RemoveAt(0);
+            list.RemoveAt(0);
+            list.RemoveAt(0);
+            list.RemoveAt(0);
+            list.RemoveAt(0);
+            list.RemoveAt(0);
+            list.RemoveAt(0);
+            list.RemoveAt(0);
+            list.RemoveAt(0);
+
+            // Assert
+            Assert.Equal(5, list.CurrentCapacity);
+        }
     }
 }
