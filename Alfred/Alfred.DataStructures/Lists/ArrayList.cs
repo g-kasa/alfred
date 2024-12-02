@@ -1,6 +1,10 @@
 ﻿namespace Alfred.DataStructures.Lists
 {
-    public class ArrayList<T>
+    /// <summary>
+    /// A barebone, dynamic array that can grow or shrink in size.
+    /// </summary>
+    /// <typeparam name="T">The type of the values contained in the ArrayList.</typeparam>
+    public class ArrayList<T> : IList<T>
     {
         /// <summary>
         /// Collection of items.
@@ -8,7 +12,7 @@
         private T[] Items { get; set; }
 
         /// <summary>
-        /// The minimum capacity of the collection.
+        /// The current capacity of the collection.
         /// </summary>
         public int CurrentCapacity => Items.Length;
         /// <summary>
@@ -17,12 +21,12 @@
         public int Length { get; private set; }
 
         public ArrayList()
-            : this(8)
+            : this(initialCapacity: 8)
         { }
 
-        public ArrayList(int minCapacity)
+        public ArrayList(int initialCapacity)
         {
-            Items = new T[minCapacity];
+            Items = new T[initialCapacity];
             Length = 0;
         }
 
@@ -30,15 +34,18 @@
         /// Indexer for the collection.
         /// </summary>
         /// <paramref name="index">The index of the item to get or set.</paramref>
+        /// <remarks>
+        /// Throws an <see cref="IndexOutOfRangeException"/> if the index is less than 0 or greater than or equal to the length of the collection.
+        /// </remarks>
         public T this[int index]
         {
             get
             {
+                if (index < 0 || index >= Length)
+                {
+                    throw new IndexOutOfRangeException();
+                }
                 return Items[index];
-            }
-            set
-            {
-                Items[index] = value;
             }
         }
 
@@ -51,6 +58,9 @@
         /// <param name="value">
         /// The value to insert.
         /// </param>
+        /// <remarks>
+        /// Time complexity: O(n)
+        /// </remarks>
         public void Insert(int index, T value)
         {
             if (Length == Items.Length)
@@ -74,6 +84,12 @@
         /// <returns>
         /// The value that was removed.
         /// </returns>
+        /// <exception cref="IndexOutOfRangeException">
+        /// If the index is less than 0 or greater than or equal to the length of the collection.
+        /// </exception>
+        /// <remarks>
+        /// Time complexity: O(n)
+        /// </remarks>
         public T RemoveAt(int index)
         {
             if (index < 0 || index >= Length)
@@ -131,16 +147,15 @@
 
         private int CalculateCorrectIndex(int index)
         {
-            var correctIndex = index;
-            if (correctIndex < 0)
+            if (index < 0)
             {
                 throw new IndexOutOfRangeException();
             }
-            if (correctIndex > Length)
+            if (index > Length)
             {
-                correctIndex = Length;
+                return Length;
             }
-            return correctIndex;
+            return index;
         }
     }
 }
