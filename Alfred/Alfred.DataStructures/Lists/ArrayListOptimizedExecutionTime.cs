@@ -1,4 +1,6 @@
-﻿namespace Alfred.DataStructures.Lists
+﻿using System.Collections;
+
+namespace Alfred.DataStructures.Lists
 {
     public class ArrayListOptimizedExecutionTime<T> : IList<T>
     {
@@ -148,6 +150,9 @@
 
             return value;
         }
+
+        public IEnumerator<T> GetEnumerator() => new ArrayListOptimizedExecutionTimeEnumerator<T>(this);
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
         private void ReduceCapacity()
         {

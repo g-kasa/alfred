@@ -229,5 +229,22 @@ namespace Alfred.DataStructures.UnitTests.Lists
             // Assert
             Assert.Equal(5, list.CurrentCapacity);
         }
+
+        [Fact]
+        public void ArrayList_GetEnumerator_Test()
+        {
+            // Arrange
+            var list = new ArrayList<int>();
+            list.Insert(0, 1);
+            list.Insert(1, 2);
+            list.Insert(2, 3);
+            list.Insert(3, 4);
+            list.Insert(4, 5);
+            // Act
+            var enumerator = list.GetEnumerator();
+            // Assert
+            Assert.NotNull(enumerator);
+            Assert.Equal(enumerator.GetType(), typeof(ArrayListEnumerator<int>));
+        }
     }
 }

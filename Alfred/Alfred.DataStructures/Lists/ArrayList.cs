@@ -1,4 +1,6 @@
-﻿namespace Alfred.DataStructures.Lists
+﻿using System.Collections;
+
+namespace Alfred.DataStructures.Lists
 {
     /// <summary>
     /// A barebone, dynamic array that can grow or shrink in size.
@@ -108,6 +110,9 @@
 
             return value;
         }
+
+        public IEnumerator<T> GetEnumerator() => new ArrayListEnumerator<T>(this);
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
         private void ReduceCapacity()
         {

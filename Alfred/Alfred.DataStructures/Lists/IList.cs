@@ -3,7 +3,7 @@
     /// <summary>
     /// A list of items.
     /// </summary>
-    public interface IList<T>
+    public interface IList<T> : IEnumerable<T>
     {
         /// <summary>
         /// Number of items in the list.
