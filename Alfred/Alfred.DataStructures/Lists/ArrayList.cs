@@ -65,6 +65,14 @@ namespace Alfred.DataStructures.Lists
                 }
                 return Items[index];
             }
+            set
+            {
+                if (index < 0 || index >= Length)
+                {
+                    throw new IndexOutOfRangeException();
+                }
+                Items[index] = value;
+            }
         }
 
         /// <summary>

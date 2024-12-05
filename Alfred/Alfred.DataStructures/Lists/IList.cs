@@ -8,7 +8,7 @@
         /// <summary>
         /// Get the value at the specified index.
         /// </summary>
-        T this[int index] { get; }
+        T this[int index] { get; set; }
 
         /// <summary>
         /// Number of items in the list.

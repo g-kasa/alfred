@@ -38,6 +38,14 @@ namespace Alfred.DataStructures.Lists
                 }
                 return Items[CalculateCorrectIndex(index)];
             }
+            set
+            {
+                if (index < 0 || index >= Length)
+                {
+                    throw new IndexOutOfRangeException();
+                }
+                Items[CalculateCorrectIndex(index)] = value;
+            }
         }
 
         public void Insert(int index, T value)

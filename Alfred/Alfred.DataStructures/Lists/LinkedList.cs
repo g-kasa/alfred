@@ -102,6 +102,19 @@ namespace Alfred.DataStructures.Lists
                 }
                 return current!.Item;
             }
+            set
+            {
+                if (index < 0 || index >= Length)
+                {
+                    throw new IndexOutOfRangeException();
+                }
+                var current = _head;
+                for (var i = 0; i < index; i++)
+                {
+                    current = current!.Next;
+                }
+                current!.Item = value;
+            }
         }
 
         /// <summary>
