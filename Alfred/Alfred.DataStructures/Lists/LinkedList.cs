@@ -58,6 +58,21 @@ namespace Alfred.DataStructures.Lists
         }
 
         /// <summary>
+        /// Creates a new instance of the <see cref="LinkedList{T}"/> class.
+        /// </summary>
+        /// <param name="items">
+        /// The items to add to the list.
+        /// </param>
+        public LinkedList(IEnumerable<T> items)
+            : this()
+        {
+            foreach (var item in items)
+            {
+                Insert(Length, item);
+            }
+        }
+
+        /// <summary>
         /// Gets the item at the specified index.
         /// </summary>
         /// <param name="index">
@@ -110,13 +125,18 @@ namespace Alfred.DataStructures.Lists
             {
                 throw new IndexOutOfRangeException();
             }
-            else if (index == 0 || _head == null)
+            
+            if (index == 0 || _head == null)
             {
                 _head = new LinkedListNode<T>(value, _head);
                 _tail = _head;
-                Length++;
             }
-            else
+            else if (index >= Length)
+            {
+                _tail!.Next = new LinkedListNode<T>(value);
+                _tail = _tail.Next;
+            }
+            else 
             {
                 var current = _head;
                 var i = 0;
@@ -126,12 +146,9 @@ namespace Alfred.DataStructures.Lists
                     i++;
                 }
                 current!.Next = new LinkedListNode<T>(value, current.Next);
-                if (current.Next!.Next == null)
-                {
-                    _tail = current.Next;
-                }
-                Length++;
             }
+
+            Length++;
         }
 
         /// <summary>

@@ -32,6 +32,22 @@ namespace Alfred.DataStructures.Lists
             Length = 0;
         }
 
+        public ArrayList(T item)
+            : this()
+        {
+            Items[0] = item;
+            Length = 1;
+        }
+
+        public ArrayList(IEnumerable<T> items)
+            : this()
+        {
+            foreach (var item in items)
+            {
+                Insert(Length, item);
+            }
+        }
+
         /// <summary>
         /// Indexer for the collection.
         /// </summary>

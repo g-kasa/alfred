@@ -6,6 +6,11 @@
     public interface IList<T> : IEnumerable<T>
     {
         /// <summary>
+        /// Get the value at the specified index.
+        /// </summary>
+        T this[int index] { get; }
+
+        /// <summary>
         /// Number of items in the list.
         /// </summary>
         int Length { get; }
