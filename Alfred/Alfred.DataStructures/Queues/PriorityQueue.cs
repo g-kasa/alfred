@@ -13,15 +13,40 @@ namespace Alfred.DataStructures.Queues
         public PriorityQueue(PriorityType priorityType)
         {
             Items = new AlfredLists.ArrayList<Tuple<TPriority, TValue>>();
+            PriorityType = priorityType;
         }
 
+        /// <summary>
+        /// Removes all items from the queue.
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="InvalidOperationException"></exception>
         public Tuple<TPriority, TValue> Peek()
         {
-            throw new NotImplementedException();
+            if (Count == 0)
+            {
+                throw new InvalidOperationException("Queue is empty.");
+            }
+
+            return Items[0];
         }
 
+        /// <summary>
+        /// Removes and returns the item with the highest or lowest priority, depending on the indicated priority type.
+        /// </summary>
+        /// <returns>
+        /// The item with the highest or lowest priority, depending on the queue priority type.
+        /// </returns>
+        /// <exception cref="InvalidOperationException">
+        /// If the queue is empty.
+        /// </exception>
         public Tuple<TPriority, TValue> Pop()
         {
+            if (Count == 0)
+            {
+                throw new InvalidOperationException("Queue is empty.");
+            }
+
             var result = Items[0];
             Items[0] = Items[Count - 1];
             Items.RemoveAt(Count - 1);
@@ -66,6 +91,10 @@ namespace Alfred.DataStructures.Queues
                     {
                         break;
                     }
+                }
+                if (currentItemIndex == indexToSwapWith)
+                {
+                    break;
                 }
                 var temp = Items[currentItemIndex];
                 Items[currentItemIndex] = Items[indexToSwapWith];
