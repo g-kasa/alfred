@@ -15,6 +15,19 @@ namespace Alfred.DataStructures.Queues
             Items = new AlfredLists.ArrayList<Tuple<TPriority, TValue>>();
             PriorityType = priorityType;
         }
+        public PriorityQueue(PriorityType priorityType, Tuple<TPriority, TValue> item)
+            : this(priorityType)
+        {
+            Push(item);
+        }
+        public PriorityQueue(PriorityType priorityType, IEnumerable<Tuple<TPriority, TValue>> items)
+            : this(priorityType)
+        {
+            foreach (var item in items)
+            {
+                Push(item);
+            }
+        }
 
         /// <summary>
         /// Removes all items from the queue.
