@@ -10,6 +10,9 @@ namespace Alfred.DataStructures.Queues
 
         public int Count => Items.Length;
 
+        public PriorityQueue() 
+            : this(PriorityType.MinFirst) 
+        { }
         public PriorityQueue(PriorityType priorityType)
         {
             Items = new AlfredLists.ArrayList<Tuple<TPriority, TValue>>();
