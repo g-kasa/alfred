@@ -22,26 +22,62 @@ namespace Alfred.DataStructures.Lists
         /// </summary>
         public int Length { get; private set; }
 
+        /// <summary>
+        /// Creates a new instance of the <see cref="ArrayList{T}"/> class.
+        /// </summary>
         public ArrayList()
             : this(initialCapacity: 8)
         { }
 
+        /// <summary>
+        /// Creates a new instance of the <see cref="ArrayList{T}"/> class.
+        /// </summary>
+        /// <param name="initialCapacity">
+        /// The initial capacity of the collection.
+        /// </param>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// If the initial capacity is negative.
+        /// </exception>
         public ArrayList(int initialCapacity)
         {
+            ArgumentOutOfRangeException.ThrowIfNegative(initialCapacity);
+
             Items = new T[initialCapacity];
             Length = 0;
         }
 
+        /// <summary>
+        /// Creates a new instance of the <see cref="ArrayList{T}"/> class.
+        /// </summary>
+        /// <param name="item">
+        /// The first item in the collection.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// If the item is null.
+        /// </exception>
         public ArrayList(T item)
             : this()
         {
+            ArgumentNullException.ThrowIfNull(item);
+
             Items[0] = item;
             Length = 1;
         }
 
+        /// <summary>
+        /// Creates a new instance of the <see cref="ArrayList{T}"/> class.
+        /// </summary>
+        /// <param name="items">
+        /// The items to add to the collection.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// If the items are null.
+        /// </exception>
         public ArrayList(IEnumerable<T> items)
-            : this()
+            : this(items.Count())
         {
+            ArgumentNullException.ThrowIfNull(items);
+
             foreach (var item in items)
             {
                 Insert(Length, item);
@@ -52,25 +88,23 @@ namespace Alfred.DataStructures.Lists
         /// Indexer for the collection.
         /// </summary>
         /// <paramref name="index">The index of the item to get or set.</paramref>
-        /// <remarks>
-        /// Throws an <see cref="IndexOutOfRangeException"/> if the index is less than 0 or greater than or equal to the length of the collection.
-        /// </remarks>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// If the index is less than 0 or greater than or equal to the length of the collection.
+        /// </exception>
         public T this[int index]
         {
             get
             {
-                if (index < 0 || index >= Length)
-                {
-                    throw new IndexOutOfRangeException();
-                }
+                ArgumentOutOfRangeException.ThrowIfNegative(index);
+                ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(index, Length);
+
                 return Items[index];
             }
             set
             {
-                if (index < 0 || index >= Length)
-                {
-                    throw new IndexOutOfRangeException();
-                }
+                ArgumentOutOfRangeException.ThrowIfNegative(index);
+                ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(index, Length);
+
                 Items[index] = value;
             }
         }
@@ -84,11 +118,20 @@ namespace Alfred.DataStructures.Lists
         /// <param name="value">
         /// The value to insert.
         /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// If the value is null.
+        /// </exception>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// If the index is less than 0.
+        /// </exception>
         /// <remarks>
         /// Time complexity: O(n)
         /// </remarks>
         public void Insert(int index, T value)
         {
+            ArgumentNullException.ThrowIfNull(value);
+            ArgumentOutOfRangeException.ThrowIfNegative(index);
+
             if (Length == Items.Length)
             {
                 DoubleCapacity();
@@ -110,7 +153,7 @@ namespace Alfred.DataStructures.Lists
         /// <returns>
         /// The value that was removed.
         /// </returns>
-        /// <exception cref="IndexOutOfRangeException">
+        /// <exception cref="ArgumentOutOfRangeException">
         /// If the index is less than 0 or greater than or equal to the length of the collection.
         /// </exception>
         /// <remarks>
@@ -118,10 +161,8 @@ namespace Alfred.DataStructures.Lists
         /// </remarks>
         public T RemoveAt(int index)
         {
-            if (index < 0 || index >= Length)
-            {
-                throw new IndexOutOfRangeException();
-            }
+            ArgumentOutOfRangeException.ThrowIfNegative(index);
+            ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(index, Length);
 
             var value = Items[index];
             ShiftLeft(index);
@@ -135,11 +176,66 @@ namespace Alfred.DataStructures.Lists
             return value;
         }
 
+        /// <summary>
+        /// Finds the index of the specified item.
+        /// </summary>
+        /// <param name="item">
+        /// The item to find.
+        /// </param>
+        /// <returns>
+        /// The index of the item, or -1 if the item is not found.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// If the item is null.
+        /// </exception>
+        public int IndexOf(T item)
+        {
+            ArgumentNullException.ThrowIfNull(item);
+
+            for (var i = 0; i < Length; i++)
+            {
+                if (Items[i]!.Equals(item))
+                {
+                    return i;
+                }
+            }
+            return -1;
+        }
+
+        /// <summary>
+        /// Finds all the indices of the specified item.
+        /// </summary>
+        /// <param name="item">
+        /// The item to find.
+        /// </param>
+        /// <returns>
+        /// The indices of the item, if found.
+        /// </returns>
+        public IEnumerable<int> IndicesOf(T item)
+        {
+            ArgumentNullException.ThrowIfNull(item);
+
+            for (var i = 0; i < Length; i++)
+            {
+                if (Items[i]!.Equals(item))
+                {
+                    yield return i;
+                }
+            }
+
+            yield break;
+        }
+
         public IEnumerator<T> GetEnumerator() => new ArrayListEnumerator<T>(this);
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
         private void ReduceCapacity()
         {
+            if (CurrentCapacity == 1)
+            {
+                return;
+            }
+
             T[] newItems = new T[CurrentCapacity / 2];
             for (var i = 0; i < Length; i++)
             {
@@ -150,7 +246,7 @@ namespace Alfred.DataStructures.Lists
 
         private void DoubleCapacity()
         {
-            var newItems = new T[Items.Length * 2];
+            var newItems = new T[Items.Length == 0 ? 2 : Items.Length * 2];
             for (var i = 0; i < Items.Length; i++)
             {
                 newItems[i] = Items[i];

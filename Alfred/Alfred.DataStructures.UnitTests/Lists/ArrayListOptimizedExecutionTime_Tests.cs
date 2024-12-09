@@ -5,7 +5,7 @@ namespace Alfred.DataStructures.UnitTests.Lists
     public class ArrayListOptimizedExecutionTime_Tests
     {
         [Fact]
-        public void ArrayListOptimizedExecutionTime_Insert_TestLengthIncrementWithValidPositionIndex()
+        public void Insert_TestLengthIncrementWithValidPositionIndex()
         {
             // Arrange
             var list = new ArrayListOptimizedExecutionTime<int>();
@@ -20,7 +20,7 @@ namespace Alfred.DataStructures.UnitTests.Lists
         }
 
         [Fact]
-        public void ArrayListOptimizedExecutionTime_Insert_TestLengthIncrementWithNegativePositionIndex()
+        public void Insert_TestLengthIncrementWithNegativePositionIndex()
         {
             // Arrange
             var list = new ArrayListOptimizedExecutionTime<int>();
@@ -29,11 +29,11 @@ namespace Alfred.DataStructures.UnitTests.Lists
             // Act
             var action = () => list.Insert(positionIndex, value);
             // Assert
-            Assert.Throws<IndexOutOfRangeException>(action);
+            Assert.Throws<ArgumentOutOfRangeException>(action);
         }
 
         [Fact]
-        public void ArrayListOptimizedExecutionTime_Insert_TestLengthIncrementWithPositionIndexGreaterThanLength()
+        public void Insert_TestLengthIncrementWithPositionIndexGreaterThanLength()
         {
             // Arrange
             var list = new ArrayListOptimizedExecutionTime<int>();
@@ -46,7 +46,7 @@ namespace Alfred.DataStructures.UnitTests.Lists
         }
 
         [Fact]
-        public void ArrayListOptimizedExecutionTime_Insert_TestLengthIncrementWithPositionIndexGreaterThanCapacity()
+        public void Insert_TestLengthIncrementWithPositionIndexGreaterThanCapacity()
         {
             // Arrange
             var list = new ArrayListOptimizedExecutionTime<int>();
@@ -59,7 +59,7 @@ namespace Alfred.DataStructures.UnitTests.Lists
         }
 
         [Fact]
-        public void ArrayListOptimizedExecutionTime_Insert_TestValueInsertedInTheMiddle()
+        public void Insert_TestValueInsertedInTheMiddle()
         {
             // Arrange
             var list = new ArrayListOptimizedExecutionTime<int>();
@@ -82,7 +82,7 @@ namespace Alfred.DataStructures.UnitTests.Lists
         }
 
         [Fact]
-        public void ArrayListOptimizedExecutionTime_Insert_TestInsertionOfMoreValuesThanCapacity()
+        public void Insert_TestInsertionOfMoreValuesThanCapacity()
         {
             // Arrange
             var list = new ArrayListOptimizedExecutionTime<int>(2);
@@ -103,7 +103,7 @@ namespace Alfred.DataStructures.UnitTests.Lists
         }
 
         [Fact]
-        public void ArrayListOptimizedExecutionTime_RemoveAt_TestLengthDecrement()
+        public void RemoveAt_TestLengthDecrement()
         {
             // Arrange
             var list = new ArrayListOptimizedExecutionTime<int>();
@@ -119,7 +119,7 @@ namespace Alfred.DataStructures.UnitTests.Lists
         }
 
         [Fact]
-        public void ArrayListOptimizedExecutionTime_RemoveAt_TestValueRemovedIsReturned()
+        public void RemoveAt_TestValueRemovedIsReturned()
         {
             // Arrange
             var list = new ArrayListOptimizedExecutionTime<int>();
@@ -136,7 +136,7 @@ namespace Alfred.DataStructures.UnitTests.Lists
         }
 
         [Fact]
-        public void ArrayListOptimizedExecutionTime_RemoveAt_TestShiftingForRemainingValues()
+        public void RemoveAt_TestShiftingForRemainingValues()
         {
             // Arrange
             var list = new ArrayListOptimizedExecutionTime<int>();
@@ -156,7 +156,7 @@ namespace Alfred.DataStructures.UnitTests.Lists
         }
 
         [Fact]
-        public void ArrayListOptimizedExecutionTime_RemoveAt_TestRemoveAtWithNegativePositionIndex()
+        public void RemoveAt_TestRemoveAtWithNegativePositionIndex()
         {
             // Arrange
             var list = new ArrayListOptimizedExecutionTime<int>();
@@ -164,11 +164,11 @@ namespace Alfred.DataStructures.UnitTests.Lists
             // Act
             Action action = () => list.RemoveAt(positionIndex);
             // Assert
-            Assert.Throws<IndexOutOfRangeException>(action);
+            Assert.Throws<ArgumentOutOfRangeException>(action);
         }
 
         [Fact]
-        public void ArrayListOptimizedExecutionTime_RemoveAt_TestRemoveAtWithPositionIndexGreaterThanLength()
+        public void RemoveAt_TestRemoveAtWithPositionIndexGreaterThanLength()
         {
             // Arrange
             var list = new ArrayListOptimizedExecutionTime<int>();
@@ -178,11 +178,11 @@ namespace Alfred.DataStructures.UnitTests.Lists
             // Act
             Action action = () => list.RemoveAt(positionIndex);
             // Assert
-            Assert.Throws<IndexOutOfRangeException>(action);
+            Assert.Throws<ArgumentOutOfRangeException>(action);
         }
 
         [Fact]
-        public void ArrayListOptimizedExecutionTime_GetEnumerator_Test()
+        public void GetEnumerator_Test()
         {
             // Arrange
             var list = new ArrayListOptimizedExecutionTime<int>();
@@ -195,7 +195,93 @@ namespace Alfred.DataStructures.UnitTests.Lists
             var enumerator = list.GetEnumerator();
             // Assert
             Assert.NotNull(enumerator);
-            Assert.Equal(enumerator.GetType(), typeof(ArrayListOptimizedExecutionTimeEnumerator<int>));
+            Assert.Equal(typeof(ArrayListOptimizedExecutionTimeEnumerator<int>), enumerator.GetType());
+        }
+
+        [Fact]
+        public void IndexOf_ShouldNotFindItem()
+        {
+            // Arrange
+            var list = new ArrayListOptimizedExecutionTime<int>([1, 2, 3, 4, 5]);
+            var item = 6;
+            // Act
+            var index = list.IndexOf(item);
+            // Assert
+            Assert.Equal(-1, index);
+        }
+
+        [Fact]
+        public void IndexOf_ShouldFindItem()
+        {
+            // Arrange
+            var list = new ArrayListOptimizedExecutionTime<int>([1, 2, 3, 4, 5]);
+            var item = 3;
+            // Act
+            var index = list.IndexOf(item);
+            // Assert
+            Assert.Equal(2, index);
+        }
+
+        [Fact]
+        public void IndexOf_ShouldThrowArgumentNullException()
+        {
+            // Arrange
+            var list = new ArrayListOptimizedExecutionTime<string>();
+            // Act
+            Action action = () => list.IndexOf(null);
+            // Assert
+            Assert.Throws<ArgumentNullException>(action);
+        }
+
+        [Fact]
+        public void IndicesOf_ShouldNotFindItem()
+        {
+            // Arrange
+            var list = new ArrayListOptimizedExecutionTime<int>([1, 2, 3, 4, 5]);
+            var item = 6;
+            // Act
+            var indices = list.IndicesOf(item);
+            // Assert
+            Assert.Empty(indices);
+        }
+
+        [Fact]
+        public void IndicesOf_ShouldFindItem()
+        {
+            // Arrange
+            var list = new ArrayListOptimizedExecutionTime<int>([1, 2, 3, 4, 5]);
+            var item = 3;
+            // Act
+            var indices = list.IndicesOf(item);
+            // Assert
+            Assert.Single(indices);
+            Assert.Equal(2, indices.First());
+        }
+
+        [Fact]
+        public void IndicesOf_ShouldFindMultipleItems()
+        {
+            // Arrange
+            var list = new ArrayListOptimizedExecutionTime<int>([1, 2, 3, 4, 5, 3]);
+            var item = 3;
+            // Act
+            var indices = list.IndicesOf(item);
+            // Assert
+            Assert.Equal(2, indices.Count());
+            Assert.Equal(2, indices.ElementAt(0));
+            Assert.Equal(5, indices.ElementAt(1));
+        }
+
+        [Fact]
+        public void IndicesOf_ShouldThrowArgumentNullException()
+        {
+            // Arrange
+            var list = new ArrayListOptimizedExecutionTime<string>();
+            // Act
+            var indices = list.IndicesOf(null);
+            Action action = () => indices.Count();
+            // Assert
+            Assert.Throws<ArgumentNullException>(action);
         }
     }
 }

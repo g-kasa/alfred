@@ -51,9 +51,14 @@ namespace Alfred.DataStructures.Lists
         /// <param name="item">
         /// The first item in the list.
         /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// If the item is null.
+        /// </exception>
         public LinkedList(T item)
             : this()
         {
+            ArgumentNullException.ThrowIfNull(item);
+
             Insert(0, item);
         }
 
@@ -63,9 +68,14 @@ namespace Alfred.DataStructures.Lists
         /// <param name="items">
         /// The items to add to the list.
         /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// If the items are null.
+        /// </exception>
         public LinkedList(IEnumerable<T> items)
             : this()
         {
+            ArgumentNullException.ThrowIfNull(items);
+
             foreach (var item in items)
             {
                 Insert(Length, item);
@@ -81,7 +91,7 @@ namespace Alfred.DataStructures.Lists
         /// <returns>
         /// The value at the specified index.
         /// </returns>
-        /// <exception cref="IndexOutOfRangeException">
+        /// <exception cref="ArgumentOutOfRangeException">
         /// If the index is less than 0 or greater than or equal to the length of the list.
         /// </exception>
         /// <remarks>
@@ -91,10 +101,9 @@ namespace Alfred.DataStructures.Lists
         {
             get
             {
-                if (index < 0 || index >= Length)
-                {
-                    throw new IndexOutOfRangeException();
-                }
+                ArgumentOutOfRangeException.ThrowIfNegative(index);
+                ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(index, Length);
+
                 var current = _head;
                 for (var i = 0; i < index; i++)
                 {
@@ -104,10 +113,9 @@ namespace Alfred.DataStructures.Lists
             }
             set
             {
-                if (index < 0 || index >= Length)
-                {
-                    throw new IndexOutOfRangeException();
-                }
+                ArgumentOutOfRangeException.ThrowIfNegative(index);
+                ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(index, Length);
+
                 var current = _head;
                 for (var i = 0; i < index; i++)
                 {
@@ -126,19 +134,20 @@ namespace Alfred.DataStructures.Lists
         /// <param name="value">
         /// The value to insert.
         /// </param>
-        /// <exception cref="IndexOutOfRangeException">
+        /// <exception cref="ArgumentOutOfRangeException">
         /// If the index is less than 0.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// If the value is null.
         /// </exception>
         /// <remarks>
         /// Time Complexity: O(n)
         /// </remarks>
         public void Insert(int index, T value)
         {
-            if (index < 0)
-            {
-                throw new IndexOutOfRangeException();
-            }
-            
+            ArgumentOutOfRangeException.ThrowIfNegative(index);
+            ArgumentNullException.ThrowIfNull(value);
+
             if (index == 0 || _head == null)
             {
                 _head = new LinkedListNode<T>(value, _head);
@@ -173,15 +182,14 @@ namespace Alfred.DataStructures.Lists
         /// <returns>
         /// The value that was removed.
         /// </returns>
-        /// <exception cref="IndexOutOfRangeException">
+        /// <exception cref="ArgumentOutOfRangeException">
         /// If the index is less than 0 or greater than or equal to the length of the list.
         /// </exception>
         public T RemoveAt(int index)
         {
-            if (index < 0 || index >= Length)
-            {
-                throw new IndexOutOfRangeException();
-            }
+            ArgumentOutOfRangeException.ThrowIfNegative(index);
+            ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(index, Length);
+
             T value;
             if (index == 0)
             {
@@ -212,6 +220,63 @@ namespace Alfred.DataStructures.Lists
             }
 
             return value;
+        }
+
+        /// <summary>
+        /// Finds the index of the specified item.
+        /// </summary>
+        /// <param name="item">
+        /// The item to find.
+        /// </param>
+        /// <returns>
+        /// The index of the item, or -1 if the item is not found.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// If the item is null.
+        /// </exception>
+        public int IndexOf(T item)
+        {
+            ArgumentNullException.ThrowIfNull(item);
+
+            var current = _head;
+            for (var i = 0; i < Length; i++)
+            {
+                if (current != null && current.Item!.Equals(item))
+                {
+                    return i;
+                }
+                current = current?.Next;
+            }
+            return -1;
+        }
+
+        /// <summary>
+        /// Finds all the indices of the specified item.
+        /// </summary>
+        /// <param name="item">
+        /// The item to find.
+        /// </param>
+        /// <returns>
+        /// The indices of the item, if found.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// If the item is null.
+        /// </exception>
+        public IEnumerable<int> IndicesOf(T item)
+        {
+            ArgumentNullException.ThrowIfNull(item);
+
+            var current = _head;
+            for (var i = 0; i < Length; i++)
+            {
+                if (current!.Item!.Equals(item))
+                {
+                    yield return i;
+                }
+                current = current.Next;
+            }
+
+            yield break;
         }
 
         public IEnumerator<T> GetEnumerator() => new LinkedListEnumerator<T>(this);
