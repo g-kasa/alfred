@@ -275,9 +275,8 @@ namespace Alfred.DataStructures.UnitTests.Lists
             var list = new AlfredDataStructures.LinkedList<string>();
             // Act
             var indices = list.IndicesOf(null);
-            Action action = () => indices.Count();
             // Assert
-            Assert.Throws<ArgumentNullException>(action);
+            Assert.Throws<ArgumentNullException>(() => indices.Count());
         }
     }
 }
