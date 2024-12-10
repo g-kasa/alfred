@@ -8,7 +8,7 @@ namespace Alfred.DataStructures.Lists
         private int CurrentIndex { get; set; } = -1;
 
         public T Current => List[CurrentIndex];
-        object IEnumerator.Current => Current;
+        object IEnumerator.Current => Current!;
 
         public void Dispose()
         { }

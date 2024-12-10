@@ -228,7 +228,7 @@ namespace Alfred.DataStructures.UnitTests.Lists
             // Arrange
             var list = new ArrayListOptimizedExecutionTime<string>();
             // Act
-            Action action = () => list.IndexOf(null);
+            Action action = () => list.IndexOf(null!);
             // Assert
             Assert.Throws<ArgumentNullException>(action);
         }
@@ -278,7 +278,7 @@ namespace Alfred.DataStructures.UnitTests.Lists
             // Arrange
             var list = new ArrayListOptimizedExecutionTime<string>();
             // Act
-            var indices = list.IndicesOf(null);
+            var indices = list.IndicesOf(null!);
             Action action = () => indices.Count();
             // Assert
             Assert.Throws<ArgumentNullException>(action);

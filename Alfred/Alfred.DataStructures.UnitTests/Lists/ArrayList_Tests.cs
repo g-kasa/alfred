@@ -117,7 +117,7 @@ namespace Alfred.DataStructures.UnitTests.Lists
             // Arrange
             var list = new ArrayList<string>();
             // Act
-            Action action = () => list.Insert(0, null);
+            Action action = () => list.Insert(0, null!);
             // Assert
             Assert.Throws<ArgumentNullException>(action);
         }
@@ -278,7 +278,7 @@ namespace Alfred.DataStructures.UnitTests.Lists
             // Arrange
             var list = new ArrayList<string>(["1", "2"]);
             // Act
-            Action action = () => list.IndexOf(null);
+            Action action = () => list.IndexOf(null!);
             // Assert
             Assert.Throws<ArgumentNullException>(action);
         }
@@ -315,7 +315,7 @@ namespace Alfred.DataStructures.UnitTests.Lists
             // Arrange
             var list = new ArrayList<string>(["1", "2"]);
             // Act
-            var indices = list.IndicesOf(null);
+            var indices = list.IndicesOf(null!);
             // Assert
             Assert.Throws<ArgumentNullException>(() => indices.Count());
         }

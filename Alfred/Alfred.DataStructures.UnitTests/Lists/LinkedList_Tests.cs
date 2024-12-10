@@ -237,7 +237,7 @@ namespace Alfred.DataStructures.UnitTests.Lists
             // Arrange
             var list = new AlfredDataStructures.LinkedList<string>();
             // Act
-            Action action = () => list.IndexOf(null);
+            Action action = () => list.IndexOf(null!);
             // Assert
             Assert.Throws<ArgumentNullException>(action);
         }
@@ -248,7 +248,6 @@ namespace Alfred.DataStructures.UnitTests.Lists
             // Arrange
             var list = new AlfredDataStructures.LinkedList<int>([1, 2, 3, 4, 5]);
             var item = 6;
-            var index = list.IndexOf(item);
             // Act
             var indices = list.IndicesOf(item);
             // Assert
@@ -274,7 +273,7 @@ namespace Alfred.DataStructures.UnitTests.Lists
             // Arrange
             var list = new AlfredDataStructures.LinkedList<string>();
             // Act
-            var indices = list.IndicesOf(null);
+            var indices = list.IndicesOf(null!);
             // Assert
             Assert.Throws<ArgumentNullException>(() => indices.Count());
         }
