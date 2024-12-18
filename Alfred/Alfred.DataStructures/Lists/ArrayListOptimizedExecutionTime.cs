@@ -329,10 +329,8 @@ namespace Alfred.DataStructures.Lists
 
         private int CalculateCorrectIndex(int index)
         {
-            if (index < 0)
-            {
-                throw new IndexOutOfRangeException();
-            }
+            ArgumentOutOfRangeException.ThrowIfNegative(index);
+
             var correctIndex = index;
             if (index > Length)
             {
